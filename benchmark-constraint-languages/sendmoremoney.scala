@@ -1,0 +1,91 @@
+import z3.scala._
+import cp.Definitions._
+import cp.Terms._
+import cp.LTrees._
+import cp.ConstraintSolving
+import purescala.FairZ3Solver
+
+object PaperExamples extends App {
+  object SendMoreMoney {
+    val name = "SEND+MORE=MONEY"
+
+    def run : Unit = {
+      println("*** Running " + name + " ***")
+      action
+    }
+
+    def asserting(c : Constraint0) : Unit = {
+      var entered = false
+      for(i <- c.lazyFindAll) {
+        entered = true
+      }
+      if(!entered) { throw new Exception("Asserting failed.") }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+    def action : Unit = {
+      val anyInt : Constraint1[Int] = ((n : Int) => true)
+
+      val letters @ Seq(s,e,n,d,m,o,r,y) = Seq.fill(8)(anyInt.lazySolve)
+
+      for(l <- letters) {
+        asserting(l >= 0 && l <= 9) 
+      }
+
+      when(distinct[Int](s,e,n,d,m,o,r,y)) {
+        println("Letters now have distinct values.")
+      } otherwise {
+        println("Letters can't have distinct values.")
+      }
+
+      val fstLine = anyInt.lazySolve
+      val sndLine = anyInt.lazySolve
+      val total = anyInt.lazySolve
+
+      asserting(fstLine == 1000*s + 100*e + 10*n + d)
+      asserting(sndLine == 1000*m + 100*o + 10*r + e)
+      asserting(total   == 10000*m + 1000*o + 100*n + 10*e + y)
+
+      asserting(s >= 1)
+      asserting(m >= 1) 
+
+      when(total == fstLine + sndLine) {
+        println("The puzzle has a solution : " + letters.map(_.value) + " (" + fstLine.value + " + " + sndLine.value + " = " + total.value + ")")
+      } otherwise {
+        println("The puzzle has no solution.")
+      }
+    }
+  }
+
+
+
+
+
+
+
+
+
+  var x = 0
+  var runtime = 0L
+  for (x <- 1 to 5) {
+    var start = System.currentTimeMillis
+    SendMoreMoney.run;
+    var end = System.currentTimeMillis - start
+    runtime = runtime + end
+    println(end)
+    val method = ConstraintSolving.GlobalContext.getClass.getDeclaredField("solver")
+    method.setAccessible(true)
+    val value = method.get(ConstraintSolving.GlobalContext).asInstanceOf[FairZ3Solver]
+    value.restartZ3;
+  }
+}

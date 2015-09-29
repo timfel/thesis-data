@@ -1,0 +1,67 @@
+import z3.scala._
+import cp.Definitions._
+import cp.Terms._
+import cp.LTrees._
+import cp.ConstraintSolving
+import purescala.FairZ3Solver
+
+object Animals extends App {
+  object Example {
+    val name = "Animals"
+
+    def run : Unit = {
+      println("*** Running " + name + " ***")
+      action
+    }
+
+    def asserting(c : Constraint0) : Unit = {
+      var entered = false
+      for(i <- c.lazyFindAll) {
+        entered = true
+      }
+      if(!entered) { throw new Exception("Asserting failed.") }
+    }
+
+    def action : Unit = {
+      val anyInt : Constraint1[Int] = ((n : Int) => true)
+
+      val cents = anyInt.lazySolve
+      val animals = anyInt.lazySolve
+      val dogc = anyInt.lazySolve
+      val catc = anyInt.lazySolve
+      val micec = anyInt.lazySolve
+
+      asserting( cents == 10000 )
+      asserting( animals == 100 )
+      asserting( dogc == 1500 )
+      asserting( catc == 100 )
+      asserting( micec == 25 )
+
+      val dog = anyInt.lazySolve
+      val cat = anyInt.lazySolve
+      val mouse = anyInt.lazySolve
+
+      asserting( dog >= 1 )
+      asserting( cat >= 1 )
+      asserting( mouse >= 1 )
+      asserting( animals == dog + cat + mouse  )
+      asserting( cents == dog * dogc + cat * catc + mouse * micec )
+
+      println("Dogs: " + dog.value + ", cats: " + cat.value + ", mice: " + mouse.value)
+    }
+  }
+
+  var x = 0
+  var runtime = 0L
+  for (x <- 1 to 5) {
+    var start = System.currentTimeMillis
+    Example.run;
+    var end = System.currentTimeMillis - start
+    runtime = runtime + end
+    val method = ConstraintSolving.GlobalContext.getClass.getDeclaredField("solver")
+    method.setAccessible(true)
+    val value = method.get(ConstraintSolving.GlobalContext).asInstanceOf[FairZ3Solver]
+    value.restartZ3;
+  }
+  println(runtime)
+}

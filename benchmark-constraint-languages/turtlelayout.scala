@@ -1,0 +1,56 @@
+import z3.scala._
+import cp.Definitions._
+import cp.Terms._
+import cp.LTrees._
+import cp.ConstraintSolving
+import purescala.FairZ3Solver
+
+object TurtleLayout extends App {
+  object Example {
+    val name = "Turtle Layout"
+
+    def run : Unit = {
+      println("*** Running " + name + " ***")
+      action
+    }
+
+    def asserting(c : Constraint0) : Unit = {
+      var entered = false
+      for(i <- c.lazyFindAll) {
+        entered = true
+      }
+      if(!entered) { throw new Exception("Asserting failed.") }
+    }
+
+    def action : Unit = {
+      val anyReal : Constraint1[Int] = ((n : Int) => true)
+
+      val gap = anyReal.lazySolve
+      val pw = anyReal.lazySolve
+      val rw = anyReal.lazySolve
+      val lw = anyReal.lazySolve
+
+      asserting( pw == 40000 )
+      asserting( gap == pw / 20000 )
+      asserting( pw == lw + gap + rw )
+      asserting( lw >= 0 )
+      asserting( rw >= 0 )
+
+      println("gap " + gap.value + ", left column " + lw.value + ", right column " + rw.value + ", page width " + pw.value)
+    }
+  }
+
+  var x = 0
+  var runtime = 0L
+  for (x <- 1 to 5) {
+    var start = System.currentTimeMillis
+    Example.run;
+    var end = System.currentTimeMillis - start
+    runtime = runtime + end
+    val method = ConstraintSolving.GlobalContext.getClass.getDeclaredField("solver")
+    method.setAccessible(true)
+    val value = method.get(ConstraintSolving.GlobalContext).asInstanceOf[FairZ3Solver]
+    value.restartZ3;
+  }
+  println(runtime)
+}
