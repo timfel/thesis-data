@@ -1,28 +1,33 @@
-DevDir = File.expand_path("~/Dev/")
-BabelsbergR = File.join(DevDir, "babelsberg-r")
-BabelsbergS = File.join(DevDir, "babelsberg-s")
-BabelsbergJS = File.join(DevDir, "babelsberg-js")
-BabelsbergRML = File.join(DevDir, "babelsberg-rml")
-Impls = [BabelsbergR, BabelsbergS, BabelsbergJS, BabelsbergRML]
+ldpath = File.expand_path("../repositories/babelsberg-r/dependencies/z3/build", __FILE__)
+Impls = {
+  "rb" => "LD_LIBRARY_PATH=#{ldpath} repositories/babelsberg-r/bin/topaz",
+  "st" => "squeak x86_64 runners/BabelsbergS.image ../",
+  "js" => "nodejs runners/babelsberg-js-benchmarks.js"
+}
+Other = {
+  "kaplan" => "repositories/scala-kaplan",
+  "turtle" => "repositories/turtle"
+}
 
-task :rsync do
-  Impls.each do |path|
-    system "rsync -a --delete --progress \"#{path}\" repositories/"
+%w[read-access write-access edit].each do |n|
+  namespace n do
+    Impls.each_pair do |name, cmd|
+      desc "Run #{n} on #{name}"
+      task name do
+        cmdline = "#{cmd} benchmark-#{n}/benchmark.#{name}"
+        puts cmdline
+        system cmdline
+      end
+    end
   end
 end
 
-group :benchmarks do
-  Impls[0...-1].each do |impl|
-    i = impl.split("/").last
-  end
-  task :benchmarks => :dependencies do
-    system "node babelsberg-js-benchmarks.js"
-    ldpath = File.expand_path("../repositories/babelsberg-r/dependencies/z3/build", __FILE__)
-    puts "LD_LIBRARY_PATH=#{ldpath} repositories/babelsberg-r/bin/topaz babelsberg-r-benchmarks.rb"
+desc "Run JIT benchmarks"
+task :jit do
+  system "#{Impls['js']} benchmark-jit/benchmark.js"
 end
 
-end
-
-task :dependencies do
-  system "npm install"
+desc "Run cross-language benchmarks"
+task :compare do
+  system "#{Impls['js']} benchmark-jit/benchmark.js"
 end

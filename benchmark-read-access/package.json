@@ -1,7 +1,0 @@
-{
-    "author": "The Babelsberg Team",
-    "name": "babelsberg-js-benchmarks",
-    "dependencies": {
-        "zombie": "<3.0"
-    }
-}
