@@ -51,7 +51,7 @@ end
 
 desc "Run JIT benchmarks"
 task :jit do
-  system Impls['js'].cmdline("benchmark-jit/benchmark.js")
+  system "nodejs benchmark-jit/babelsberg-js-benchmarks.js"
 end
 
 namespace :compare do
