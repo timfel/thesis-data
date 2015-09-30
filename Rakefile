@@ -1,17 +1,24 @@
 class String
-  def [](arg)
+  def go(arg)
     "#{self} #{arg}"
+  end
+end
+
+class Proc
+  def go(arg)
+    self.call arg
   end
 end
 
 ldpath = File.expand_path("../repositories/babelsberg-r/dependencies/z3/build", __FILE__)
 Impls = {
-  "rb" => "LD_LIBRARY_PATH=#{ldpath} repositories/babelsberg-r/bin/topaz",
+  "rb" => "env LD_LIBRARY_PATH=#{ldpath} repositories/babelsberg-r/bin/topaz",
   "st" => Proc.new { |arg| "squeak x86_64 runners/BabelsbergS.image ../#{arg}" },
   "js" => "nodejs runners/babelsberg-js-benchmarks.js"
 }
 
 KaplanRunner = Proc.new do |arg|
+  puts "KAPLAN NOT WORKING (MISSING OLD 32BIT STUFF)"
   path = arg.split('/')[0...-1].join(".")
   main = arg.split('/').last.capitalize.split('.').first
   "repositories/kaplan/scalac-kaplan #{arg} &&\
@@ -21,7 +28,7 @@ end
 TurtleRunner = Proc.new do |arg|
   exe = arg.split('.')[0...-1].join(".")
   "repositories/turtle/turtle/turtle -Lrepositories/turtle/libturtle/.libs -OCJGD6 -Irepositories/turtle -p repositories/turtle/crawl -m #{exe} #{arg} && \
-   LD_LIBRARY_PATH=repositories/turtle/libturtle/.libs #{exe}"
+   env LD_LIBRARY_PATH=repositories/turtle/libturtle/.libs #{exe}"
 end
 
 Langs = {
@@ -36,10 +43,12 @@ Langs = {
       if File.exist? "benchmark-#{n}/benchmark.#{name}"
         desc "Run #{n} on #{name}"
         task name do
-          cmdline = cmd["benchmark-#{n}/benchmark.#{name}"]
+          cmdline = cmd.go("benchmark-#{n}/benchmark.#{name}")
           puts cmdline
           system cmdline
         end
+      else
+        task name do; end
       end
     end
     desc "Run #{n} on all"
@@ -59,7 +68,7 @@ namespace :compare do
       all = %w[rb js prolog kaplan turtle].map do |lang|
         desc "Run cross-language benchmark #{benchmark} on #{lang}"
         task lang do
-          cmdline = Langs[lang]["benchmark-constraint-languages/#{benchmark}.#{lang}"]
+          cmdline = Langs[lang].go("benchmark-constraint-languages/#{benchmark}.#{lang}")
           puts cmdline
           system cmdline
         end

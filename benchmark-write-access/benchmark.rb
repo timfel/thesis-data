@@ -31,7 +31,7 @@ class MockObject
   end
 end
 
-Iterations = 1000
+Iterations = 100000
 sumObj = MockObject.new
 obj = MockObject.new
 
@@ -50,6 +50,13 @@ Benchmark.bmbm do |x|
   x.report('Constrained Write') do
     Iterations.times { obj.a += obj.b += obj.c += obj.d += obj.e += 1 }
   end
+  # x.report('Constrained Write (edit)') do
+  #   edit(Iterations.times.each) { obj.a }
+  #   edit(Iterations.times.each) { obj.b }
+  #   edit(Iterations.times.each) { obj.c }
+  #   edit(Iterations.times.each) { obj.d }
+  #   edit(Iterations.times.each) { obj.e }
+  # end
   x.report('Constrained Write (disabled)') do
     constraint.disable
     Iterations.times { obj.a += obj.b += obj.c += obj.d += obj.e + 1 }

@@ -23,7 +23,7 @@ end
 
 require "libcassowary"
 
-Iterations = 100
+Iterations = 1000
 
 class Mercury
   def initialize

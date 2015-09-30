@@ -31,7 +31,7 @@ class MockObject
   end
 end
 
-Iterations = 1000
+Iterations = 100000000
 sumObj = MockObject.new
 obj = MockObject.new
 
