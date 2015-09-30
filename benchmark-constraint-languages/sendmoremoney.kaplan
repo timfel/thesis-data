@@ -5,8 +5,8 @@ import cp.LTrees._
 import cp.ConstraintSolving
 import purescala.FairZ3Solver
 
-object PaperExamples extends App {
-  object SendMoreMoney {
+object Sendmoremoney extends App {
+  object Example {
     val name = "SEND+MORE=MONEY"
 
     def run : Unit = {
@@ -79,7 +79,7 @@ object PaperExamples extends App {
   var runtime = 0L
   for (x <- 1 to 5) {
     var start = System.currentTimeMillis
-    SendMoreMoney.run;
+    Example.run;
     var end = System.currentTimeMillis - start
     runtime = runtime + end
     println(end)

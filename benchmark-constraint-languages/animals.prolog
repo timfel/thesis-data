@@ -39,6 +39,5 @@ report(Count, T1, T2) :-
     write(Time),
     nl.
 
-%% Vars=[S,E,N,D,M,O,R,Y], sendmoremoney(Vars), label(Vars).
 bench(5).
-%% exit().
+% exit().

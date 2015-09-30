@@ -5,7 +5,7 @@ import cp.LTrees._
 import cp.ConstraintSolving
 import purescala.FairZ3Solver
 
-object TurtleLayout extends App {
+object Layout extends App {
   object Example {
     val name = "Turtle Layout"
 
