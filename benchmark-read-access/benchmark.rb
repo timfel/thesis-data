@@ -1,4 +1,26 @@
 require 'benchmark'
+
+module GC
+  def self.start
+  end
+end
+
+class IO
+  attr_accessor :sync
+end
+
+class String
+  def gsub!(*args, &block)
+    self.replace(self.gsub(*args, &block))
+  end
+end
+
+class Benchmark::Tms
+  def format(format = nil, *args)
+    return "#{utime}\t#{stime}\t#{total}\t#{real}\n"
+  end
+end
+
 require "libcassowary"
 
 class MockObject
@@ -9,7 +31,7 @@ class MockObject
   end
 end
 
-Iterations = 1000000
+Iterations = 1000
 sumObj = MockObject.new
 obj = MockObject.new
 
