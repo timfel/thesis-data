@@ -1,5 +1,5 @@
 class String
-  def cmdline(arg)
+  def [](arg)
     "#{self} #{arg}"
   end
 end
@@ -7,27 +7,23 @@ end
 ldpath = File.expand_path("../repositories/babelsberg-r/dependencies/z3/build", __FILE__)
 Impls = {
   "rb" => "LD_LIBRARY_PATH=#{ldpath} repositories/babelsberg-r/bin/topaz",
-  "st" => "squeak x86_64 runners/BabelsbergS.image ../",
+  "st" => Proc.new { |arg| "squeak x86_64 runners/BabelsbergS.image ../#{arg}" },
   "js" => "nodejs runners/babelsberg-js-benchmarks.js"
 }
-module KaplanRunner
-  extend self
-  def cmdline(arg)
-    path = arg.split('/')[0...-1].join(".")
-    main = arg.split('/').last.capitalize.split('.').first
-    "repositories/kaplan/scalac-kaplan #{arg} &&\
-     repositories/kaplan/scala-kaplan #{path}.#{main}"
-  end
+
+KaplanRunner = Proc.new do |arg|
+  path = arg.split('/')[0...-1].join(".")
+  main = arg.split('/').last.capitalize.split('.').first
+  "repositories/kaplan/scalac-kaplan #{arg} &&\
+   repositories/kaplan/scala-kaplan #{path}.#{main}"
 end
 
-module TurtleRunner
-  extend self
-  def cmdline(arg)
-    exe = arg.split('.')[0...-1].join(".")
-    "repositories/turtle/turtle/turtle -Lrepositories/turtle/libturtle/.libs -OCJGD6 -Irepositories/turtle -p repositories/turtle/crawl -m #{exe} #{arg} && \
-     LD_LIBRARY_PATH=repositories/turtle/libturtle/.libs #{exe}"
-  end
+TurtleRunner = Proc.new do |arg|
+  exe = arg.split('.')[0...-1].join(".")
+  "repositories/turtle/turtle/turtle -Lrepositories/turtle/libturtle/.libs -OCJGD6 -Irepositories/turtle -p repositories/turtle/crawl -m #{exe} #{arg} && \
+   LD_LIBRARY_PATH=repositories/turtle/libturtle/.libs #{exe}"
 end
+
 Langs = {
   "kaplan" => KaplanRunner,
   "turtle" => TurtleRunner,
@@ -40,11 +36,14 @@ Langs = {
       if File.exist? "benchmark-#{n}/benchmark.#{name}"
         desc "Run #{n} on #{name}"
         task name do
-          cmdline = cmd.cmdline("benchmark-#{n}/benchmark.#{name}")
+          cmdline = cmd["benchmark-#{n}/benchmark.#{name}"]
           puts cmdline
           system cmdline
         end
       end
+    end
+    desc "Run #{n} on all"
+    task :all => Impls.keys do
     end
   end
 end
@@ -60,7 +59,7 @@ namespace :compare do
       all = %w[rb js prolog kaplan turtle].map do |lang|
         desc "Run cross-language benchmark #{benchmark} on #{lang}"
         task lang do
-          cmdline = Langs[lang].cmdline("benchmark-constraint-languages/#{benchmark}.#{lang}")
+          cmdline = Langs[lang]["benchmark-constraint-languages/#{benchmark}.#{lang}"]
           puts cmdline
           system cmdline
         end
