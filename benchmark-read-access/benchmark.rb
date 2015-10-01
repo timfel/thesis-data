@@ -1,26 +1,5 @@
-require 'benchmark'
-
-module GC
-  def self.start
-  end
-end
-
-class IO
-  attr_accessor :sync
-end
-
-class String
-  def gsub!(*args, &block)
-    self.replace(self.gsub(*args, &block))
-  end
-end
-
-class Benchmark::Tms
-  def format(format = nil, *args)
-    return "#{utime}\t#{stime}\t#{total}\t#{real}\n"
-  end
-end
-
+$LOAD_PATH.unshift(File.expand_path("../../runners/", __FILE__))
+require "mybenchmark"
 require "libcassowary"
 
 class MockObject
@@ -31,27 +10,39 @@ class MockObject
   end
 end
 
-Iterations = 100000000
-sumObj = MockObject.new
-obj = MockObject.new
+obj, constraint = nil, nil
 
-constraint = always do
-  obj.a == 1 &&
-    obj.b == 1 &&
-    obj.c == 1 &&
-    obj.d == 1 &&
-    obj.e == 1
+Resetter = Proc.new do |label|
+  obj = MockObject.new
+  if label.start_with? "Constrained"
+    constraint.disable if constraint
+    constraint = always do
+      obj.a == 1 &&
+        obj.b == 1 &&
+        obj.c == 1 &&
+        obj.d == 1 &&
+        obj.e == 1
+    end
+    constraint.disable if label.end_with? "(disabled)"
+  end
 end
 
-Benchmark.bmbm do |x|
-  x.report('Unconstrained Read') { Iterations.times { sumObj.a + sumObj.b + sumObj.c + sumObj.d + sumObj.e } }
-  x.report('Constrained Read') { Iterations.times { obj.a + obj.b +
-        obj.c + obj.d + obj.e
-  } }
-  x.report('Constrained Read (disabled)') {
-    constraint.disable
-    Iterations.times {
-    obj.a + obj.b +
-      obj.c + obj.d + obj.e
-  } }
+class SetupSuite
+  def warming(label, *args)
+    Resetter[label]
+  end
+  def warmup_stats(*); end
+  alias_method :add_report, :warmup_stats
+  alias_method :running, :warming
+end
+suite = SetupSuite.new
+
+benchmark = Proc.new { |t| t.times { obj.a + obj.b + obj.c + obj.d + obj.e } }
+
+Benchmark.ips do |x|
+  x.config(:suite => suite)
+  x.report('Unconstrained Read', &benchmark)
+  x.report('Constrained Read', &benchmark)
+  x.report('Constrained Read (disabled)', &benchmark)
+  x.compare!
 end

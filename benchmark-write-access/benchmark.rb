@@ -1,64 +1,62 @@
-require 'benchmark'
-
-module GC
-  def self.start
-  end
-end
-
-class IO
-  attr_accessor :sync
-end
-
-class String
-  def gsub!(*args, &block)
-    self.replace(self.gsub(*args, &block))
-  end
-end
-
-class Benchmark::Tms
-  def format(format = nil, *args)
-    return "#{utime}\t#{stime}\t#{total}\t#{real}\n"
-  end
-end
-
+$LOAD_PATH.unshift(File.expand_path("../../runners/", __FILE__))
+require "mybenchmark"
 require "libcassowary"
 
 class MockObject
   attr_accessor :a, :b, :c, :d, :e
 
-  def initialize
-    @a,@b,@c,@d,@e = 1,1,1,1,1
+  def initialize(a=1,b=1,c=1,d=1,e=1)
+    @a,@b,@c,@d,@e = a,b,c,d,e
   end
 end
 
-Iterations = 100000
-sumObj = MockObject.new
-obj = MockObject.new
+obj, constraint = nil, nil
 
-constraint = always do
-  obj.a >= 1 &&
-    obj.b >= 1 &&
-    obj.c >= 1 &&
-    obj.d >= 1 &&
-    obj.e >= 1
+Resetter = Proc.new do |label|
+  obj = MockObject.new
+  if label.start_with? "Constrained"
+    constraint.disable if constraint
+    constraint = always do
+      obj.a >= 1 &&
+        obj.b >= 1 &&
+        obj.c >= 1 &&
+        obj.d >= 1 &&
+        obj.e >= 1
+    end
+    constraint.disable if label.end_with? "(disabled)"
+  end
 end
 
-Benchmark.bmbm do |x|
-  x.report('Unconstrained Write') do
-    Iterations.times { sumObj.a += sumObj.b += sumObj.c += sumObj.d += sumObj.e += 1 }
+class SetupSuite
+  def warming(label, *args)
+    Resetter[label]
   end
-  x.report('Constrained Write') do
-    Iterations.times { obj.a += obj.b += obj.c += obj.d += obj.e += 1 }
+  def warmup_stats(*); end
+  alias_method :add_report, :warmup_stats
+  alias_method :running, :warming
+end
+suite = SetupSuite.new
+
+benchmark = Proc.new { |t| t.times { obj.a += 1; obj.b += 1; obj.c += 1; obj.d += 1; obj.e += 1 } }
+
+Benchmark.ips do |x|
+  x.config(:suite => suite)
+  x.report('Unconstrained Write', &benchmark)
+  x.report('Constrained Write', &benchmark)
+  x.report('Constrained Write (disabled)', &benchmark)
+  x.report('Constrained Write (edit)') do |times|
+    class MyStream
+      def initialize(times)
+        @times = times
+      end
+      def next
+        raise StopIteration if @times == 0
+        o = MockObject.new(@times, @times, @times, @times, @times)
+        @times -= 1
+        o
+      end
+    end
+    edit(stream: MyStream.new(times), accessors: ["a", "b", "c", "d", "e"]) { obj }
   end
-  # x.report('Constrained Write (edit)') do
-  #   edit(Iterations.times.each) { obj.a }
-  #   edit(Iterations.times.each) { obj.b }
-  #   edit(Iterations.times.each) { obj.c }
-  #   edit(Iterations.times.each) { obj.d }
-  #   edit(Iterations.times.each) { obj.e }
-  # end
-  x.report('Constrained Write (disabled)') do
-    constraint.disable
-    Iterations.times { obj.a += obj.b += obj.c += obj.d += obj.e + 1 }
-  end
+  x.compare!
 end
