@@ -1,0 +1,176 @@
+~...sktop/thesis-data system ❰git:(master)❱ ✘  rake jit
+====== Start benchmark ======
+Simulations: clAddSim, dbAddSim, clDragSim, clDrag2DSim, clDrag2DSimFastX, clDrag2DSimChangeHalf, clDrag2DSimChangeTenth, clDrag2DSimFreqChange5
+Times in ms (ec | classic | add | mul | last / no-jit):
+clAddSim(5):                   11 ±2.2727858578307707 | 15 ±3.5221521198772145   SL   | 11 ±1.7511900715418263 ( 0%)  | 10 ±1.118033988749895   FA   | 9 ±1.1874342087037921   FA   |   14
+clAddSim(500):                 42 ±1.2512216252748969 | 65 ±6.8202313417915335 ( 6%)  | 46 ±6.237966192776475 ( 1%)  | 52 ±12.473260288401834 ( 2%)  | 42 ±1.6069294390925264 ( 0%)  |  455
+dbAddSim(5):                   12 ±0.8563488385776752 | 14 ±2.0612833111653748   SL   | 14 ±3.146249972409835   SL   | 13 ±1.0878112581387147       | 12 ±1.0873004286866728 ( 0%)  |   13
+dbAddSim(500):                 21 ±3.4634600554294783 | 28 ±3.291234148799234 ( 9%)  | 23 ±1.3564659966250536 ( 3%)  | 22 ±0.9122621455602671 ( 1%)  | 23 ±2.139833846093871 ( 3%)  |  101
+clDragSim(5):                  65 ±6.651733274534958 | 72 ±6.266755318521876       | 70 ±7.228108712212036 ( 71%) | 69 ±9.002715639677223 ( 57%) | 65 ±6.649060083951715 ( 0%)  |   72
+clDragSim(500):                153 ±9.932214702113969 | 216 ±11.660998623140683 ( 5%)  | 158 ±15.116179705497316 ( 0%)  | 158 ±9.447868660296997 ( 0%)  | 156 ±13.311482094626262 ( 0%)  |  1496
+clDrag2DSim(5):                44 ±5.022615520489964 | 57 ±8.086751854456494 ( 93%) | 50 ±6.1423846256066446 ( 43%) | 44 ±1.308519095092701 ( 0%)  | 60 ±6.748580097571143   SL   |   58
+clDrag2DSim(500):              124 ±9.67361819015454 | 798 ±50.55040388892391 ( 30%) | 767 ±25.477222943030686 ( 29%) | 760 ±24.646951580717285 ( 29%) | 2775 ±57.55735303928498   SL   |  2346
+clDrag2DSimFastX(5):           44 ±4.379370832538492 | 49 ±6.242862591258382   SL   | 46 ±6.3118935352238 ( 67%) | 41 ±2.0765890836230017   FA   | 45 ±5.287406421551749 ( 33%) |   47
+clDrag2DSimFastX(500):         130 ±10.053468168857066 | 364 ±17.535392781457734 ( 19%) | 328 ±20.473967210419513 ( 16%) | 324 ±18.444029446469177 ( 16%) | 1014 ±38.55898799962929 ( 73%) |  1339
+clDrag2DSimChangeHalf(5):      43 ±3.863792034891227 | 48 ±7.145783527523221   SL   | 53 ±18.249627089036338   SL   | 43 ±2.80396544597508 ( 0%)  | 46 ±6.5621812091881635 ( 75%) |   47
+clDrag2DSimChangeHalf(500):    102 ±2.427618860804416 | 340 ±24.502358163155552 ( 34%) | 229 ±17.49425302460465 ( 18%) | 355 ±22.082194939211394 ( 36%) | 104 ±9.777297968025499 ( 0%)  |  802
+clDrag2DSimChangeTenth(5):     41 ±2.880779215574996 | 45 ±5.803160058680672 ( 50%) | 44 ±6.02955682911734 ( 38%) | 40 ±2.619584360585133   FA   | 42 ±5.840947411736102 ( 13%) |   49
+clDrag2DSimChangeTenth(500):   100 ±9.790244577582774 | 210 ±14.163176040548091 ( 17%) | 163 ±12.99063765435195 ( 10%) | 201 ±13.891684163156349 ( 16%) | 98 ±2.7656624683588706   FA   |  735
+clDrag2DSimFreqChange5(5):     40 ±2.4404006956964173 | 47 ±5.969273173697299   SL   | 45 ±4.738025842995043   SL   | 43 ±6.451528673285285 ( 75%) | 42 ±5.633727796840107 ( 50%) |   44
+clDrag2DSimFreqChange5(500):   100 ±8.66384569473754 | 131 ±9.791152468768253 ( 5%)  | 107 ±7.727584069782453 ( 1%)  | 117 ±12.33621587936196 ( 3%)  | 100 ±8.639444426582068 ( 0%)  |  725
+====== benchmark done ======
+Custom Events not supported on this platform
+
+~...sktop/thesis-data system \u2770git:(master)\u2771 \u2714  rake read-access:all
+env LD_LIBRARY_PATH=/home/tim/Desktop/thesis-data/repositories/babelsberg-r/dependencies/z3/build repositories/babelsberg-r/bin/topaz benchmark-read-access/benchmark.rb
+Cassowary constraint solver loaded.
+Calculating -------------------------------------
+  Unconstrained Read574.222000k i/100ms
+    Constrained Read54.036000k i/100ms
+Constrained Read (disabled)
+                    55.237000k i/100ms
+Calculating -------------------------------------
+  Unconstrained Read 38.389684M (±3.825481pc) i/s - 38.472874M in 1.004202s
+    Constrained Read 627.087317k (±4.132120pc) i/s - 648.432000k in 1.036044s
+Constrained Read (disabled)
+                     635.570114k (±1.406454pc) i/s - 607.607000k in 0.956196s
+Comparison:
+Unconstrained Read: 38389683.566213 i/s
+Constrained Read (disabled): 635570.114447 i/s - 60.401965x slower
+Constrained Read: 627087.317199 i/s - 61.219040x slower
+squeak x86_64 runners/BabelsbergS.image ../benchmark-read-access/benchmark.st
+Using 64bit VM
+Remaining arguments are runners/BabelsbergS.image ../benchmark-read-access/benchmark.st
+Warmup
+ Report for: ConstraintsBenchmarks
+Benchmark ConstrainedReadAccessDisabled
+ConstrainedReadAccessDisabled total: iterations=10 runtime: 3.60ms +/-0.36
+Benchmark ReadAccess
+ReadAccess total: iterations=10 runtime: 0.00ms +/-0.00
+Benchmark ConstrainedReadAccess
+ConstrainedReadAccess total: iterations=10 runtime: 2.20ms +/-0.26
+Run
+ Report for: ConstraintsBenchmarks
+Benchmark ConstrainedReadAccessDisabled
+ConstrainedReadAccessDisabled total: iterations=100 runtime: 6.37ms +/-0.22
+Benchmark ReadAccess
+ReadAccess total: iterations=100 runtime: 0.190ms +/-0.072
+Benchmark ConstrainedReadAccess
+ConstrainedReadAccess total: iterations=100 runtime: 2.360ms +/-0.099
+----QUIT/NOSAVE----{2 October 2015 . 9:52:21 am} BabelsbergS.image priorSource: 25795713
+nodejs runners/babelsberg-js-benchmarks.js benchmark-read-access/benchmark.js
+Custom Events not supported on this platform   
+Unconstrained Read x 1,530,834 ops/sec ±0.25% (67 runs sampled)
+Properties Read x 1,295,597 ops/sec ±0.35% (67 runs sampled)
+Constrained Read x 233,047 ops/sec ±1.21% (50 runs sampled)
+Constrained Read (disabled) x 247,730 ops/sec ±1.13% (50 runs sampled)
+Constrained Read (disabled, unconstrained) x 1,488,289 ops/sec ±0.26% (49 runs sampled)
+Fastest is Unconstrained Read
+
+~...sktop/thesis-data system ❰git:(master)❱ ✘  rake write-access:all
+env LD_LIBRARY_PATH=/home/tim/Desktop/thesis-data/repositories/babelsberg-r/dependencies/z3/build repositories/babelsberg-r/bin/topaz benchmark-write-access/benchmark.rb
+Cassowary constraint solver loaded.
+Calculating -------------------------------------
+ Unconstrained Write500.227000k i/100ms
+   Constrained Write6.000000  i/100ms
+Constrained Write (disabled)
+                    6.000000  i/100ms
+Calculating -------------------------------------
+ Unconstrained Write 32.101321M (±5.611046pc) i/s - 32.014528M in 1.001624s
+   Constrained Write 49.198618  (±12.195465pc) i/s - 48.000000  in 0.987779s
+Constrained Write (disabled)
+                     50.830745  (±7.869253pc) i/s - 54.000000  in 1.068544s
+
+Comparison:
+Unconstrained Write: 32101321.080849 i/s
+Constrained Write (disabled): 50.830745 i/s - 631533.557001x slower
+Constrained Write: 49.198618 i/s - 652484.205273x slower
+
+squeak x86_64 runners/BabelsbergS.image ../benchmark-write-access/benchmark.st
+Using 64bit VM
+Remaining arguments are runners/BabelsbergS.image ../benchmark-write-access/benchmark.st
+Warmup
+
+ Report for: ConstraintsBenchmarks
+Benchmark ConstrainedWriteAccessDisabled
+ConstrainedWriteAccessDisabled total: iterations=10 runtime: 5357ms +/-243
+
+Benchmark ConstrainedWriteAccess
+ConstrainedWriteAccess total: iterations=10 runtime: 4144ms +/-189
+
+Benchmark WriteAccess
+WriteAccess total: iterations=10 runtime: 0.50ms +/-0.41
+
+Run
+
+ Report for: ConstraintsBenchmarks
+Benchmark ConstrainedWriteAccessDisabled
+ConstrainedWriteAccessDisabled total: iterations=100 runtime: 29301ms +/-695
+
+Benchmark ConstrainedWriteAccess
+ConstrainedWriteAccess total: iterations=100 runtime: 15024ms +/-697
+
+Benchmark WriteAccess
+WriteAccess total: iterations=100 runtime: 0.59ms +/-0.11
+
+
+
+
+----QUIT/NOSAVE----{2 October 2015 . 12:19:55 pm} BabelsbergS.image priorSource: 25795713nodejs runners/babelsberg-js-benchmarks.js benchmark-write-access/benchmark.js
+Custom Events not supported on this platform   
+Unconstrained Write x 1,535,503 ops/sec ±0.53% (67 runs sampled)
+Properties Write x 740,086 ops/sec ±1.54% (54 runs sampled)
+Constrained Write x 259 ops/sec ±3.00% (49 runs sampled)
+Constrained Write (disabled) x 286 ops/sec ±2.63% (48 runs sampled)
+Constrained Write (disabled, unconstrained) x 1,476,190 ops/sec ±0.28% (50 runs sampled)
+Constrained Write (edit) x 152 ops/sec ±2.60% (44 runs sampled)
+Fastest is Unconstrained Write
+
+
+~...sktop/thesis-data system ❰git:(master)❱ ✔  rake edit:rb
+env LD_LIBRARY_PATH=/home/tim/Desktop/thesis-data/repositories/babelsberg-r/dependencies/z3/build repositories/babelsberg-r/bin/topaz benchmark-edit/benchmark.rb
+Cassowary constraint solver loaded.
+Calculating -------------------------------------
+Imperative Drag Simulation
+                    1.914000k i/100ms
+Declarative Drag Simulation
+                    1.000000  i/100ms
+Edit Drag Simulation66.000000  i/100ms
+Calculating -------------------------------------
+Imperative Drag Simulation
+                     758.673929k (±5.563919pc) i/s - 738.804000k in 0.990188s
+Declarative Drag Simulation
+                     0.926190  (±0.000000pc) i/s - 1.000000  in 1.079692s
+Edit Drag Simulation 881.729292  (±7.598704pc) i/s - 792.000000  in 0.904400s
+
+~...sktop/thesis-data system ❰git:(master)❱ ✔  rake edit:js
+nodejs runners/babelsberg-js-benchmarks.js benchmark-edit/benchmark.js
+Custom Events not supported on this platform
+Imperative Drag x 4,893 ops/sec ±2.64% (29 runs sampled)
+Declarative Drag x 0.20 ops/sec ±1.12% (5 runs sampled)
+Edit Drag x 0.14 ops/sec ±3.63% (5 runs sampled)
+Fastest is Imperative Drag
+
+~...sktop/thesis-data system ❰git:(master)❱ ✔  rake jit
+====== Start benchmark ======
+Simulations: clAddSim, dbAddSim, clDragSim, clDrag2DSim, clDrag2DSimFastX, clDrag2DSimChangeHalf, clDrag2DSimChangeTenth, clDrag2DSimFreqChange5
+Times in ms (ec | classic | add | mul | last / no-jit):
+clAddSim(5):                   10 ±1.6802777548171413 | 13 ±2.4073960113690385   SL   | 10 ±1.563827214098653 ( 0%)  | 9 ±0.9122621455602671   FA   | 8 ±1.077032961426901   FA   |   12
+clAddSim(500):                 39 ±7.931932649459119 | 58 ±6.706630218588832 ( 5%)  | 39 ±1.0770329614269012 ( 0%)  | 41 ±5.203524446629098 ( 1%)  | 37 ±1.0440306508910553   FA   |  404
+dbAddSim(5):                   11 ±2.6727015047201457 | 11 ±0.8825468196582487       | 15 ±4.263019274332846   SL   | 11 ±0.8975274678557507       | 11 ±0.8034647195462634       |   11
+dbAddSim(500):                 20 ±3.477547028198661 | 26 ±3.489826484066062 ( 8%)  | 20 ±0.8621678104251707 ( 0%)  | 20 ±0.9826268648655784 ( 0%)  | 20 ±1.374772708486752 ( 0%)  |   91
+clDragSim(5):                  54 ±1.5307950004273378 | 62 ±6.202150164795002 ( 89%) | 59 ±6.008235089349357 ( 56%) | 57 ±5.478138369920935 ( 33%) | 54 ±5.889821729050889 ( 0%)  |   63
+clDragSim(500):                137 ±8.38523835214135 | 190 ±10.788677192110047 ( 5%)  | 142 ±9.204105364214143 ( 0%)  | 137 ±8.04128237423747 ( 0%)  | 136 ±6.49965811066671   FA   |  1287
+clDrag2DSim(5):                37 ±5.086474439356029 | 48 ±5.503534218017445 ( 92%) | 42 ±5.302410353372847 ( 42%) | 38 ±1.1298967504452195 ( 8%)  | 51 ±5.98516684999025   SL   |   49
+clDrag2DSim(500):              110 ±6.590312756024726 | 702 ±27.459950635223088 ( 31%) | 677 ±29.770903020678876 ( 30%) | 651 ±21.79503001450866 ( 28%) | 2391 ±40.402708930081516   SL   |  2024
+clDrag2DSimFastX(5):           37 ±4.793977703559146 | 41 ±5.416538460021204   SL   | 39 ±5.389392874485544   SL   | 35 ±1.2578641509408808   FA   | 39 ±4.739432689913659   SL   |   38
+clDrag2DSimFastX(500):         108 ±1.02469507659596 | 309 ±16.811503997758994 ( 20%) | 284 ±20.896703620959507 ( 17%) | 278 ±15.613526898885537 ( 17%) | 876 ±32.10034613866683 ( 76%) |  1119
+clDrag2DSimChangeHalf(5):      35 ±3.636237371545238 | 37 ±4.208589101138555 ( 29%) | 40 ±5.118159391378462 ( 71%) | 36 ±1.364632632697248 ( 14%) | 37 ±5.220046828227586 ( 29%) |   42
+clDrag2DSimChangeHalf(500):    91 ±8.220637985514802 | 271 ±13.749383824577576 ( 33%) | 188 ±12.889099615135612 ( 18%) | 286 ±17.321823101381547 ( 36%) | 85 ±1.0624918300339483   FA   |  640
+clDrag2DSimChangeTenth(5):     36 ±1.3503086067019392 | 40 ±5.300314456080255   SL   | 37 ±2.4944382578492945   SL   | 37 ±4.784349485562274   SL   | 37 ±4.984531628503881   SL   |   36
+clDrag2DSimChangeTenth(500):   88 ±12.192028361005214 | 179 ±26.916104225289864 ( 17%) | 134 ±15.814234094637655 ( 9%)  | 168 ±15.149037373157851 ( 15%) | 88 ±13.330166290535661 ( 0%)  |  617
+clDrag2DSimFreqChange5(5):     36 ±7.766309004640208 | 40 ±6.771180760317132   SL   | 36 ±6.690706655918756   SL   | 37 ±8.826034720580292   SL   | 33 ±5.563771702321686   FA   |   35
+clDrag2DSimFreqChange5(500):   85 ±12.082310301520248 | 111 ±16.234702201012357 ( 5%)  | 92 ±12.782105547296275 ( 1%)  | 95 ±11.339410135550358 ( 2%)  | 87 ±12.223338332877805 ( 0%)  |  647
+====== benchmark done ======
+Custom Events not supported on this platform
+
