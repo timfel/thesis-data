@@ -27,7 +27,7 @@ def action
 end
 
 start = Time.now
-5.times do
+50.times do
   action
 end
 puts "#{Time.now - start}"

@@ -18,8 +18,8 @@ dobench(Count) :-
     nrepeat(Count),
     Vars = [Gap,Pw,Lw,Rw],
     layout(Vars),
-    %% label(Vars),
-    %% write(Vars),
+    label(Vars),
+    write(Vars),
     nl,
     fail.
 dobench(_).
@@ -37,5 +37,5 @@ report(Count, T1, T2) :-
     nl.
 
 %% Vars=[S,E,N,D,M,O,R,Y], sendmoremoney(Vars), label(Vars).
-bench(5).
+% bench(1).
 %% exit().

@@ -14,7 +14,7 @@ def fun
 end
 
 start = Time.now
-5.times do
+50.times do
   fun
 end
 puts "#{Time.now - start}"

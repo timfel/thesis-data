@@ -34,7 +34,7 @@ end
 Langs = {
   "kaplan" => KaplanRunner,
   "turtle" => TurtleRunner,
-  "prolog" => "prolog -t 'bench(100).'"
+  "prolog" => "prolog -t 'bench(50).'"
 }.merge(Impls)
 
 %w[read-access write-access edit].each do |n|
@@ -65,7 +65,7 @@ end
 namespace :compare do
   all = %w[animals layout sendmoremoney].map do |benchmark|
     namespace benchmark do
-      all = %w[rb js prolog kaplan turtle].map do |lang|
+      all = %w[rb js prolog kaplan turtle st].map do |lang|
         desc "Run cross-language benchmark #{benchmark} on #{lang}"
         task lang do
           cmdline = Langs[lang].go("benchmark-constraint-languages/#{benchmark}.#{lang}")

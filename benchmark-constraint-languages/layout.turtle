@@ -51,7 +51,7 @@ end;
 
 fun main(args: list of string): int
   var start: long := sys.times.time();
-  var y : int := 500;
+  var y : int := 50;
   while (y > 0) do
     test0();
     y := y - 1;

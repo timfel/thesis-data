@@ -39,5 +39,5 @@ report(Count, T1, T2) :-
     write(Time),
     nl.
 
-bench(5).
+bench(50).
 % exit().

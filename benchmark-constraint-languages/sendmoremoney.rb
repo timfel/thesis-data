@@ -20,28 +20,6 @@ class Array
   end
 end
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 def action
   # initialize each variable to an integer so that the solver knows its type
   s,e,n,d,m,o,r,y = [0]*8
@@ -64,8 +42,8 @@ def action
   [c, c1, c2, c3].each(&:disable)
 end
 
-5.times do
-  start = Time.now
+start = Time.now
+50.times do
   action
-  puts "#{Time.now - start}"
 end
+puts "#{Time.now - start}"
