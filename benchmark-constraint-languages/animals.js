@@ -43,12 +43,12 @@ function action() {
 
         if (REPEATS > 0) {
             REPEATS -= 1;
-            setTimeout(action, 10000);
+            setTimeout(action, 0);
         } else {
             console.log("THIS IS THE TIME:" + TIME_);
             alert.original.apply(window, ["CLOSE ME"])
         }
-    }, 10000);
+    }, 3000);
 }
 
 action()
