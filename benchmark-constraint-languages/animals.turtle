@@ -45,6 +45,7 @@ end;
 fun main(args: list of string): int
   var start: long := sys.times.time();
   test0();
+  io.put ("THIS IS THE TIME: ");
   io.put (sys.times.time() - start);
   io.nl ();
   return 0;

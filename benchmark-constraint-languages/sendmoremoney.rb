@@ -43,7 +43,7 @@ def action
 end
 
 start = Time.now
-50.times do
+10.times do
   action
 end
-puts "#{Time.now - start}"
+puts "THIS IS THE TIME: #{Time.now - start}"

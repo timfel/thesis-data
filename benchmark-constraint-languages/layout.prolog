@@ -6,7 +6,9 @@ layout(Vars) :-
     Gap * 20000 #= Pw,
     Lw + Gap + Rw #= Pw,
     Lw #>= 0,
-    Rw #>= 0.
+    Rw #>= 0,
+    Gap #= 2,
+    Lw #= 0.
 
 bench(Count) :-
     T1 is cputime * 1000,
@@ -33,9 +35,10 @@ nrepeat(N) :-
 report(Count, T1, T2) :-
     Time is T2-T1,
     nl,
+    write('THIS IS THE TIME: '),
     write(Time),
     nl.
 
 %% Vars=[S,E,N,D,M,O,R,Y], sendmoremoney(Vars), label(Vars).
-% bench(1).
+%% bench(10).
 %% exit().

@@ -115,7 +115,7 @@ Benchmark subclass: #ConstraintsBenchmarks
 
 !ConstraintsBenchmarks methodsFor: 'nil' stamp: 'tfel 10/5/2015 12:01'!
 benchAnimals
-50 timesRepeat: [
+10 timesRepeat: [
         | solver |
         obj := AnimalsObject new.
         solver := ConstraintSolver newZ3Solver.
@@ -130,6 +130,8 @@ benchAnimals
         FileStream stdout nextPutAll: 'Dogs: ', obj dog, ', cats: ', obj cat , ', mice: ', obj mouse; cr; flush].
 ! !
 
-FileStream stdout nextPutAll: 'Run'; crlf; flush.!
-FileStream stdout nextPutAll: (ConstraintsBenchmarks run: 10) asString; crlf; flush.!
+| a |
+FileStream stdout nextPutAll: 'Run'; crlf; flush.
+a := (ConstraintsBenchmarks run: 1).
+FileStream stdout nextPutAll: 'THIS IS THE TIME: '; nextPutAll: (a results anyOne first total asString); crlf; flush.
 Smalltalk snapshot: false andQuit: true.!

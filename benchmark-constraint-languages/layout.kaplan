@@ -42,7 +42,7 @@ object Layout extends App {
 
   var x = 0
   var runtime = 0L
-  for (x <- 1 to 50) {
+  for (x <- 1 to 10) {
     var start = System.currentTimeMillis
     Example.run;
     var end = System.currentTimeMillis - start
@@ -52,5 +52,5 @@ object Layout extends App {
     val value = method.get(ConstraintSolving.GlobalContext).asInstanceOf[FairZ3Solver]
     value.restartZ3;
   }
-  println(runtime)
+  println("THIS IS THE TIME: " + runtime)
 }

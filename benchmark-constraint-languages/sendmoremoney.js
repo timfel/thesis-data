@@ -4,11 +4,8 @@ DOGC = 1500
 CATC = 100
 MICEC = 25
 TIME_ = 0
-REPEATS = 50
+REPEATS = 10
 
-console.log("Spend exactly #{CENTS / 100} dollars and buy exactly #{ANIMALS} animals. Dogs cost")
-console.log("15 dollars, cats cost 1 dollar, and mice cost 25 cents each. You")
-console.log("have to buy at least one of each. How many of each should you buy?")
 function action() {
     var solver = new EmZ3();
     var oldPM = solver.postMessage;
@@ -55,7 +52,8 @@ function action() {
             REPEATS -= 1;
             setTimeout(action, 10);
         } else {
-            console.log(TIME_);
+            console.log("THIS IS THE TIME:" + TIME_);
+            alert.original.apply(window, ["CLOSE ME"])
         }
     }, 10000);
 }

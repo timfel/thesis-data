@@ -78,11 +78,12 @@ end;
 
 fun main(args: list of string): int
   var start: long := sys.times.time();
-  var y : int := 50;
+  var y : int := 10;
   while (y > 0) do
     test0();
     y := y - 1;
   end;
+  io.put ("THIS IS THE TIME: ");
   io.put (sys.times.time() - start);
   io.nl ();
   return 0;

@@ -14,7 +14,7 @@ def fun
 end
 
 start = Time.now
-50.times do
+10.times do
   fun
 end
-puts "#{Time.now - start}"
+puts "THIS IS THE TIME: #{Time.now - start}"

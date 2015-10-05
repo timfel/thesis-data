@@ -64,7 +64,7 @@ Benchmark subclass: #ConstraintsBenchmarks
 !ConstraintsBenchmarks methodsFor: 'benchmarks' stamp: 'tfel 9/23/2015 15:42'!
 benchLayout
 
-50 timesRepeat: [
+10 timesRepeat: [
 obj := ConstraintMockObject new.
 [ obj pw = 40000 ] alwaysTrue.
 [ obj gap = (obj pw / 20000) ] alwaysTrue.
@@ -77,6 +77,8 @@ crlf; flush.].
 
 ! !
 
-FileStream stdout nextPutAll: 'Run'; crlf; flush.!
-FileStream stdout nextPutAll: (ConstraintsBenchmarks run: 10) asString; crlf; flush.!
+| a |
+FileStream stdout nextPutAll: 'Run'; crlf; flush.
+a := (ConstraintsBenchmarks run: 1).
+FileStream stdout nextPutAll: 'THIS IS THE TIME: '; nextPutAll: (a results anyOne first total asString); crlf; flush.
 Smalltalk snapshot: false andQuit: true.!

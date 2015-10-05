@@ -77,15 +77,15 @@ object Sendmoremoney extends App {
 
   var x = 0
   var runtime = 0L
-  for (x <- 1 to 50) {
+  for (x <- 1 to 10) {
     var start = System.currentTimeMillis
     Example.run;
     var end = System.currentTimeMillis - start
     runtime = runtime + end
-    println(end)
     val method = ConstraintSolving.GlobalContext.getClass.getDeclaredField("solver")
     method.setAccessible(true)
     val value = method.get(ConstraintSolving.GlobalContext).asInstanceOf[FairZ3Solver]
     value.restartZ3;
   }
+  println("THIS IS THE TIME: " + runtime)
 }

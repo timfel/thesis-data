@@ -12,8 +12,9 @@ function fun() {
     console.log("gap " + obj.gap + ", left column " + obj.lw + ", right column " + obj.rw + ", page width " + obj.pw)
 }
 
-for(var i = 0; i < 50; i++) {
-    var start = Date.now();
+var start = Date.now();
+for(var i = 0; i < 10; i++) {
     fun()
-    console.log("," + Date.now() - start);
 }
+console.log("THIS IS THE TIME:" + (Date.now() - start));
+alert.original.apply(window, ["CLOSE ME"])

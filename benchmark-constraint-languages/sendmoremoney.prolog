@@ -35,6 +35,7 @@ nrepeat(N) :-
 report(Count, T1, T2) :-
     Time is T2-T1,
     nl,
+    write('THIS IS THE TIME: '),
     write(Time),
     nl.
 

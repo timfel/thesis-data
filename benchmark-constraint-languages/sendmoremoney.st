@@ -91,6 +91,8 @@ benchSendMoreMoney
 		FileStream stdout nextPutAll: 'solution: ', p ary; cr; flush.
 	]! !
 
+| a|
 FileStream stdout nextPutAll: 'Run'; crlf; flush.!
-FileStream stdout nextPutAll: (ConstraintBenchmarks run: 10) asString; crlf; flush.!
+a := (ConstraintBenchmarks run: 1).
+FileStream stdout nextPutAll: 'THIS IS THE TIME: '; nextPutAll: (a results anyOne first total asString); crlf; flush.
 Smalltalk snapshot: false andQuit: true.!
