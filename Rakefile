@@ -115,9 +115,11 @@ namespace :compare do
         lang
       end
       desc "Run all comparisons for #{benchmark}"
-      task :all do
+      task :all, [:language] do |t, args|
+        args = [args[:language]].compact
+        args = languages if args.empty?
         MAGIC = /THIS IS THE TIME:\s*(\d+\.?\d*)/
-        results = languages.map do |t|
+        results = args.map do |t|
           [t, 10.times.map do
              stdout, stderr, status = Open3.capture3("timeout -k 10 600 rake compare:#{benchmark}:#{t}")
              print stdout, stderr
