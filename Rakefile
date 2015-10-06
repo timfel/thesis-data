@@ -121,15 +121,17 @@ namespace :compare do
         MAGIC = /THIS IS THE TIME:\s*(\d+\.?\d*)/
         results = args.map do |t|
           [t, 10.times.map do
-             stdout, stderr, status = Open3.capture3("timeout -k 10 600 rake compare:#{benchmark}:#{t}")
-             print stdout, stderr
+             stdout, stderr, status = Open3.capture3("timeout -k 10 120 rake compare:#{benchmark}:#{t}")
              numbers = (stdout + stderr).scan(MAGIC)
+             print numbers
              numbers.flatten.map(&:to_f)
            end].flatten
         end
         results.each do |r|
           lang = r[0]; numbers = r[1..-1]
-          File.open('compare-results.txt', 'w') { |f| f << "#{r}\n" }
+          File.open('compare-results.txt', 'a') do |f|
+            f << "\t#{benchmark}.#{lang}: #{numbers.mean}, #{numbers.sample_variance}, #{numbers.standard_deviation}\n"
+          end
           puts "\n\n\t#{benchmark}.#{lang}: #{numbers.mean}, #{numbers.sample_variance}, #{numbers.standard_deviation}\n\n"
         end
       end
