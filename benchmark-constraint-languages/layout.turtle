@@ -50,14 +50,14 @@ fun test0()
 end;
 
 fun main(args: list of string): int
-  var start: long := sys.times.time();
+  var start: real := sys.times.clock();
   var y : int := 10;
   while (y > 0) do
     test0();
     y := y - 1;
   end;
   io.put ("THIS IS THE TIME: ");
-  io.put (sys.times.time() - start);
+  io.put (sys.times.clock() - start);
   io.nl ();
   return 0;
 end;

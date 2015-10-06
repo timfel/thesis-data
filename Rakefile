@@ -45,7 +45,7 @@ Impls = {
   "st" => Proc.new { |arg| "squeak x86_64 runners/BabelsbergS.image ../#{arg}" },
   "js" => "nodejs runners/babelsberg-js-benchmarks.js",
   "chromejs" => Proc.new do |arg|
-    "chromium-browser --temp-profile --enable-logging=stderr --v=1  http://localhost:9001/runners/babelsbergjs.bench.html?file=../#{arg.gsub('chromejs', 'js')}"
+    "chromium-browser --temp-profile  --disable-hang-monitor --enable-logging=stderr --v=1  http://localhost:9001/runners/babelsbergjs.bench.html?file=../#{arg.gsub('chromejs', 'js')}"
   end
 }
 

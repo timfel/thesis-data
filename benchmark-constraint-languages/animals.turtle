@@ -43,10 +43,10 @@ fun test0()
 end;
 
 fun main(args: list of string): int
-  var start: long := sys.times.time();
+  var start: real := sys.times.clock();
   test0();
   io.put ("THIS IS THE TIME: ");
-  io.put (sys.times.time() - start);
+  io.put ((sys.times.clock() - start) * 10.0);
   io.nl ();
   return 0;
 end;
